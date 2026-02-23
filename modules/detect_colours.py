@@ -116,18 +116,23 @@ class DetectRed:
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
         # Set upper and lower bounds for colour detection, this is in HSV
-        lower_red = np.array ([0,50,50])
-        upper_red = np.array([10,255,255])
+        lower_red1 = np.array ([0,50,50])
+        upper_red1 = np.array([10,255,255])
 
+        lower_red2 = np.array([170, 50, 50])
+        upper_red2 = np.array([180, 255, 255])
+     
         # Apply the threshold for the colour detection
-        mask = cv2.inRange(hsv, lower_red, upper_red)
+        mask1 = cv2.inRange(hsv, lower_red1, upper_red1)
+        mask2 = cv2.inRange(hsv, lower_red2, upper_red2)
+        mask = mask1 + mask2
 
         # Shows the detected colour from the mask
         res = cv2.bitwise_and(img,img, mask= mask) 
 
         # Annotate the colour detections
         # replace the '_' parameter with the appropiate variable
-        contours, _ = cv2.findContours(mask), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         # ============
         # ↑ BOOTCAMPERS MODIFY ABOVE THIS COMMENT ↑
         # ============
