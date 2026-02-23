@@ -33,7 +33,6 @@ class DetectBlue:
     def run(self, image: str, output_path: Path, return_mask: bool = False) -> None | np.ndarray:
         """
         Detects blue from an image and shows the annotated result.
-
         image: The image to run the colour detection algorithm on.
         output_path: Path to output the resulting image with annotated detections.
         return_mask: Option to return the mask (black and white version of colour detection).
@@ -64,6 +63,9 @@ class DetectBlue:
         # ============
 
         # Annotate the colour detections
+        # 1st parameter is binary image; non-zero pixels are treated as white, zero pixels are treated as black
+        # 2nd parameter is the contor retreival mode; determines the hierarchy of contours found 
+        # 3rd parameter is contour approximation method. cv2.CHAIN_APPROX_SIMPLE compresses horizontal, vertical, and diagnol segments, leaving only end points. 
         contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         cv2.drawContours(img, contours, -1, (0, 255, 0), 2)
 
@@ -81,7 +83,6 @@ class DetectRed:
     """
     Detects red objects from an image.
     """
-
     __create_key = object()
 
     @classmethod
@@ -89,7 +90,6 @@ class DetectRed:
         """
         Factory method to create DetectRed instance.
         """
-
         return DetectRed(cls.__create_key)
 
     def __init__(self, class_create_private_key: object) -> None:
@@ -113,21 +113,21 @@ class DetectRed:
         # ============
 
         # Convert the image's colour to HSV
-        hsv = ...
+        hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
         # Set upper and lower bounds for colour detection, this is in HSV
-        lower_red = ...
-        upper_red = ...
+        lower_red = np.array ([0,50,50])
+        upper_red = np.array([10,255,255])
 
         # Apply the threshold for the colour detection
-        mask = ...
+        mask = cv2.inRange(hsv, lower_red, upper_red)
 
         # Shows the detected colour from the mask
-        res = ...
+        res = cv2.bitwise_and(img,img, mask= mask) 
 
         # Annotate the colour detections
         # replace the '_' parameter with the appropiate variable
-        contours, _ = cv2.findContours(_, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        contours, _ = cv2.findContours(mask), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         # ============
         # ↑ BOOTCAMPERS MODIFY ABOVE THIS COMMENT ↑
         # ============
@@ -146,7 +146,8 @@ class DetectRed:
 
         # Include the "return_mask" parameter if statement here, similar to how it is implemented in DetectBlue
         # Tests will not pass if this isn't included!
-
+        return mask if return_mask else None
+    
         # ============
         # ↑ BOOTCAMPERS MODIFY ABOVE THIS COMMENT ↑
         # ============
