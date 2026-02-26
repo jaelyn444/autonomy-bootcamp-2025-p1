@@ -44,19 +44,19 @@ class DetectBlue:
         # ============
 
         # Convert the image's colour to HSV
-        #1st parameter is the input image whose color space is to be changed
-        #2nd parameter is the color space conversion code (BGR to HSV - Hue, Saturation, Value)
+        # 1st parameter is the input image whose color space is to be changed
+        # 2nd parameter is the color space conversion code (BGR to HSV - Hue, Saturation, Value)
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
         # Set upper and lower bounds for colour detection, this is in HSV
-        lower_blue = np.array([110,50,50])
-        upper_blue = np.array([130,255,255])
+        lower_blue = np.array([90, 100, 50])
+        upper_blue = np.array([130, 255, 255])
 
         # Apply the threshold for the colour detection
         mask = cv2.inRange(hsv, lower_blue, upper_blue)
 
         # Shows the detected colour from the mask
-        res = cv2.bitwise_and(img,img, mask= mask)
+        res = cv2.bitwise_and(img, img, mask=mask)
 
         # ============
         # ↑ BOOTCAMPERS MODIFY ABOVE THIS COMMENT ↑
@@ -64,8 +64,8 @@ class DetectBlue:
 
         # Annotate the colour detections
         # 1st parameter is binary image; non-zero pixels are treated as white, zero pixels are treated as black
-        # 2nd parameter is the contor retreival mode; determines the hierarchy of contours found 
-        # 3rd parameter is contour approximation method. cv2.CHAIN_APPROX_SIMPLE compresses horizontal, vertical, and diagnol segments, leaving only end points. 
+        # 2nd parameter is the contor retreival mode; determines the hierarchy of contours found
+        # 3rd parameter is contour approximation method. cv2.CHAIN_APPROX_SIMPLE compresses horizontal, vertical, and diagnol segments, leaving only end points.
         contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         cv2.drawContours(img, contours, -1, (0, 255, 0), 2)
 
@@ -83,6 +83,7 @@ class DetectRed:
     """
     Detects red objects from an image.
     """
+
     __create_key = object()
 
     @classmethod
@@ -116,19 +117,19 @@ class DetectRed:
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
         # Set upper and lower bounds for colour detection, this is in HSV
-        lower_red1 = np.array ([0,50,50])
-        upper_red1 = np.array([10,255,255])
+        lower_red1 = np.array([0, 50, 50])
+        upper_red1 = np.array([10, 255, 255])
 
         lower_red2 = np.array([170, 50, 50])
         upper_red2 = np.array([180, 255, 255])
-     
+
         # Apply the threshold for the colour detection
         mask1 = cv2.inRange(hsv, lower_red1, upper_red1)
         mask2 = cv2.inRange(hsv, lower_red2, upper_red2)
         mask = mask1 + mask2
 
         # Shows the detected colour from the mask
-        res = cv2.bitwise_and(img,img, mask= mask) 
+        res = cv2.bitwise_and(img, img, mask=mask)
 
         # Annotate the colour detections
         # replace the '_' parameter with the appropiate variable
@@ -152,7 +153,7 @@ class DetectRed:
         # Include the "return_mask" parameter if statement here, similar to how it is implemented in DetectBlue
         # Tests will not pass if this isn't included!
         return mask if return_mask else None
-    
+
         # ============
         # ↑ BOOTCAMPERS MODIFY ABOVE THIS COMMENT ↑
         # ============
