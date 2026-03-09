@@ -1,3 +1,5 @@
+# pylint: disable=no-member
+
 """
 BOOTCAMPERS TO COMPLETE.
 
@@ -49,14 +51,11 @@ class DetectBlue:
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
         # Set upper and lower bounds for colour detection, this is in HSV
-        lower_blue = np.array([90, 100, 50])
-        upper_blue = np.array([130, 255, 255])
+        lower_blue = np.array([90, 110, 55])
+        upper_blue = np.array([120, 255, 255])
 
         # Apply the threshold for the colour detection
         mask = cv2.inRange(hsv, lower_blue, upper_blue)
-
-        # Shows the detected colour from the mask
-        res = cv2.bitwise_and(img, img, mask=mask)
 
         # ============
         # ↑ BOOTCAMPERS MODIFY ABOVE THIS COMMENT ↑
@@ -71,9 +70,6 @@ class DetectBlue:
 
         # Show the annotated detection!
         cv2.imwrite(str(output_path), img)
-
-        # Show res to see the result of what is being filtered in the colour detection
-        # cv2.imwrite(str(output_path), res)
 
         # This parameter is needed to run tests
         return mask if return_mask else None
@@ -117,10 +113,9 @@ class DetectRed:
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
         # Set upper and lower bounds for colour detection, this is in HSV
-        lower_red1 = np.array([0, 50, 50])
-        upper_red1 = np.array([10, 255, 255])
-
-        lower_red2 = np.array([170, 50, 50])
+        lower_red1 = np.array([0, 110, 55])
+        upper_red1 = np.array([13, 255, 255])
+        lower_red2 = np.array([175, 110, 55])
         upper_red2 = np.array([180, 255, 255])
 
         # Apply the threshold for the colour detection
@@ -129,7 +124,7 @@ class DetectRed:
         mask = mask1 + mask2
 
         # Shows the detected colour from the mask
-        res = cv2.bitwise_and(img, img, mask=mask)
+        # res = cv2.bitwise_and(img, img, mask=mask)
 
         # Annotate the colour detections
         # replace the '_' parameter with the appropiate variable
@@ -142,9 +137,6 @@ class DetectRed:
 
         # Show the annotated detection!
         cv2.imwrite(str(output_path), img)
-
-        # Show res to see the result of what is being filtered in the colour detection
-        # cv2.imwrite(str(output_path), res)
 
         # ============
         # ↓ BOOTCAMPERS MODIFY BELOW THIS COMMENT ↓
